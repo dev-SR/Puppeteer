@@ -1,5 +1,11 @@
 # Puppeteer web scraping and automation
 
+- [Puppeteer web scraping and automation](#puppeteer-web-scraping-and-automation)
+	- [Setup](#setup)
+		- [Install dependencies](#install-dependencies)
+	- [`evaluate` vs `$$eval`](#evaluate-vs-eval)
+
+
 ## Setup
 
 ### Install dependencies
