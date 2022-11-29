@@ -35,30 +35,44 @@ async function configureTheBrowser() {
 }
 async function run() {
  let page = await configureTheBrowser();
- let words = await page.$$eval('.row.entry-header', (elements) =>
-  elements.map((e) => ({
+
+ let words = await page.evaluate(() => {
+  let headElements = Array.from(document.querySelectorAll('.row.entry-header'));
+  return headElements.map((e) => ({
    word: e.querySelector('h1.hword')?.textContent,
    syllables: e.querySelector('span.word-syllables-entry')?.textContent
-  }))
- );
+  }));
+ });
 
+ // let words = await page.$$eval('.row.entry-header', (elements) =>
+ //  elements.map((e) => ({
+ //   word: e.querySelector('h1.hword')?.textContent,
+ //   syllables: e.querySelector('span.word-syllables-entry')?.textContent
+ //  }))
+ // );
+
+ let definitions = await page.evaluate(() => {
+  // let definitions = [];
+  // let definitionElements = document.querySelectorAll('.vg div.sb-0.sb-entry');
+  // definitionElements.forEach((e) => {
+  //  let definition = e.querySelector('span.dtText')?.textContent;
+  //  let example = e.querySelector('span.ex-sent.first-child')?.textContent;
+  //  definitions.push({ definition, example });
+  // });
+  // return definitions;
+  let definitionElements = Array.from(document.querySelectorAll('.vg div.sb-0.sb-entry'));
+  return definitionElements.map((e) => ({
+   definition: e.querySelector('span.dtText')?.textContent,
+   example: e.querySelector('span.ex-sent.first-child')?.textContent
+  }));
+ });
+ // or
  // let definitions = await page.$$eval('.vg div.sb-0.sb-entry', (elements) =>
  //  elements.map((e) => ({
  //   definition: e.querySelector('span.dtText')?.textContent,
  //   example: e.querySelector('span.ex-sent.first-child')?.textContent
  //  }))
  // );
-
- let definitions = await page.evaluate(() => {
-  let definitions = [];
-  let definitionElements = document.querySelectorAll('.vg div.sb-0.sb-entry');
-  definitionElements.forEach((e) => {
-   let definition = e.querySelector('span.dtText')?.textContent;
-   let example = e.querySelector('span.ex-sent.first-child')?.textContent;
-   definitions.push({ definition, example });
-  });
-  return definitions;
- });
 
  console.log({
   words,
@@ -67,4 +81,5 @@ async function run() {
 }
 
 run();
+
 ```
